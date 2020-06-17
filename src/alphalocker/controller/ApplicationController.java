@@ -9,21 +9,34 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import sun.plugin.javascript.navig.Anchor;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class ApplicationController implements Initializable {
 
     @FXML
-    public Text filigrane;
+    public AnchorPane pane;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        filigrane.setText(filigrane.getText().replace("{version}", AlphaLocker.VERSION));
+        if(pane == null) {
+            System.exit(0);
+            return;
+        }
+        Text filigrane = new Text("AlphaLocker " + AlphaLocker.VERSION + " by Gamaticow");
+        Font font = new Font(filigrane.getFont().getFamily(), 10.0);
+        filigrane.setFont(font);
+        AnchorPane.setBottomAnchor(filigrane, 0.0);
+        AnchorPane.setRightAnchor(filigrane, 0.0);
+        pane.getChildren().add(filigrane);
     }
 
     public void lock() throws IOException {
