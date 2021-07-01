@@ -5,20 +5,16 @@ package alphalocker.model;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
-import java.io.File;
-import java.io.IOException;
-import java.io.Serializable;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.Key;
+import java.util.zip.DeflaterOutputStream;
+import java.util.zip.InflaterOutputStream;
 
-public class ALFile implements Serializable {
+public class ALFile extends ALElement {
 
-    private static final String VALIDATOR = "AlphaLocker";
-
-    private byte[] name;
     private byte[] content;
-    private byte[] validator = VALIDATOR.getBytes();
 
     public ALFile(File file) throws IOException {
         name = file.getName().getBytes();
@@ -28,44 +24,84 @@ public class ALFile implements Serializable {
     public void lock(String secret) throws Exception {
         if(!new String(validator).equals(VALIDATOR))
             return;
-        Key key = new SecretKeySpec(secret.getBytes(), "AES");
-        Cipher cipher = Cipher.getInstance("AES");
-        cipher.init(Cipher.ENCRYPT_MODE, key);
+        Cipher cipher = getCipher(secret, Cipher.ENCRYPT_MODE);
 
         name = cipher.doFinal(name);
         content = cipher.doFinal(content);
         validator = cipher.doFinal(validator);
+
+        content = compress(content);
     }
 
     public boolean unlock(String secret) throws Exception{
         if(new String(validator).equals(VALIDATOR))
             return true;
 
-        Key key = new SecretKeySpec(secret.getBytes(), "AES");
-        Cipher cipher = Cipher.getInstance("AES");
-        cipher.init(Cipher.DECRYPT_MODE, key);
+        Cipher cipher = getCipher(secret, Cipher.DECRYPT_MODE);
 
         byte[] v = cipher.doFinal(validator);
         if(!new String(v).equals(VALIDATOR))
             return false;
 
         validator = v;
-        content = cipher.doFinal(content);
+        content = cipher.doFinal(decompress(content));
         name = cipher.doFinal(name);
         return true;
     }
 
-    public String getName(){
+    public void paste(File file) throws Exception{
+        if(!new String(validator).equals(VALIDATOR))
+            return;
+
+        File out = new File(file.getAbsolutePath() + File.separator + getName());
+        OutputStream os = new FileOutputStream(out.getAbsolutePath());
+        os.write(getContent());
+        os.close();
+    }
+
+    private String getName(){
         if(new String(validator).equals(VALIDATOR))
             return new String(name);
         return null;
     }
 
-    public byte[] getContent(){
+    private byte[] getContent(){
         if(new String(validator).equals(VALIDATOR))
             return content;
 
         return null;
+    }
+
+    public static byte[] compress(byte[] in) {
+        try {
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            DeflaterOutputStream defl = new DeflaterOutputStream(out);
+            defl.write(in);
+            defl.flush();
+            defl.close();
+
+            return out.toByteArray();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.exit(150);
+            return null;
+        }
+    }
+
+    public static byte[] decompress(byte[] in) {
+        try {
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            InflaterOutputStream infl = new InflaterOutputStream(out);
+            infl.write(in);
+            infl.flush();
+            infl.close();
+
+            return out.toByteArray();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.exit(150);
+            return null;
+        }
     }
 
 }

@@ -13,10 +13,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import sun.plugin.javascript.navig.Anchor;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -39,9 +37,9 @@ public class ApplicationController implements Initializable {
         pane.getChildren().add(filigrane);
     }
 
-    public void lock() throws IOException {
+    public void lockFile() throws IOException {
         Stage stage = new Stage();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/alphalocker/view/lock.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/alphalocker/view/lock_file.fxml"));
         Parent root = loader.load();
         stage.setTitle("AlphaLocker - Locker");
         stage.setResizable(false);
@@ -49,9 +47,29 @@ public class ApplicationController implements Initializable {
         stage.show();
     }
 
-    public void unlock() throws IOException {
+    public void lockFolder() throws IOException {
         Stage stage = new Stage();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/alphalocker/view/unlock.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/alphalocker/view/lock_folder.fxml"));
+        Parent root = loader.load();
+        stage.setTitle("AlphaLocker - Locker");
+        stage.setResizable(false);
+        stage.setScene(new Scene(root));
+        stage.show();
+    }
+
+    public void unlockFile() throws IOException {
+        Stage stage = new Stage();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/alphalocker/view/unlock_file.fxml"));
+        Parent root = loader.load();
+        stage.setTitle("AlphaLocker - Unlocker");
+        stage.setResizable(false);
+        stage.setScene(new Scene(root));
+        stage.show();
+    }
+
+    public void unlockFolder() throws IOException {
+        Stage stage = new Stage();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/alphalocker/view/unlock_folder.fxml"));
         Parent root = loader.load();
         stage.setTitle("AlphaLocker - Unlocker");
         stage.setResizable(false);

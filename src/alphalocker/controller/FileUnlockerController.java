@@ -12,7 +12,7 @@ import javafx.stage.Stage;
 
 import java.io.*;
 
-public class UnlockerController {
+public class FileUnlockerController {
 
     @FXML
     public TextField fileField;
@@ -43,10 +43,7 @@ public class UnlockerController {
         if(!ciphered.unlock(secretField.getText()))
             return;
 
-        File out = new File(file.getParent() + File.separator + ciphered.getName());
-        OutputStream os = new FileOutputStream(out.getAbsolutePath());
-        os.write(ciphered.getContent());
-        os.close();
+        ciphered.paste(new File(file.getParent()));
 
         ((Stage) fileField.getScene().getWindow()).close();
     }

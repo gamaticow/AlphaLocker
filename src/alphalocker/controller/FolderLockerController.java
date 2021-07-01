@@ -10,9 +10,11 @@ import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
 
-public class LockerController {
+public class FolderLockerController {
 
     @FXML
     public TextField fileField;

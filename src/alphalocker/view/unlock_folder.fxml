@@ -8,7 +8,7 @@
 <?import javafx.scene.text.Text?>
 
 <AnchorPane prefHeight="200.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/11.0.1"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="alphalocker.controller.UnlockerController">
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="alphalocker.controller.FolderUnlockerController">
    <TextField fx:id="fileField" layoutX="14.0" layoutY="82.0" prefHeight="25.0" prefWidth="249.0"/>
    <Button layoutX="262.0" layoutY="82.0" mnemonicParsing="false" onMouseClicked="#search" text="..."/>
    <Button layoutX="236.0" layoutY="161.0" mnemonicParsing="false" onMouseClicked="#unlock" text="Unlock"/>
@@ -17,7 +17,7 @@
          <Font size="48.0"/>
       </font>
    </Text>
-   <Text layoutX="14.0" layoutY="77.0" strokeType="OUTSIDE" strokeWidth="0.0" text="File :"/>
+   <Text layoutX="14.0" layoutY="77.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Folder :"/>
    <Text layoutX="14.0" layoutY="128.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Secret key :"/>
    <PasswordField fx:id="secretField" layoutX="14.0" layoutY="132.0" prefHeight="25.0" prefWidth="272.0"/>
 </AnchorPane>
